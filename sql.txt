@@ -1,0 +1,18 @@
+SELECT
+    u.email,
+    COUNT(l.id) AS total_links,
+    SUM(CASE WHEN l.link_type = 'website' THEN 1 ELSE 0 END) AS website,
+    SUM(CASE WHEN l.link_type = 'book' THEN 1 ELSE 0 END) AS book,
+    SUM(CASE WHEN l.link_type = 'article' THEN 1 ELSE 0 END) AS article,
+    SUM(CASE WHEN l.link_type = 'music' THEN 1 ELSE 0 END) AS music,
+    SUM(CASE WHEN l.link_type = 'video' THEN 1 ELSE 0 END) AS video
+FROM
+    user_auth_user u
+JOIN
+    link_manager_app_link l ON u.id = l.owner_id
+GROUP BY
+    u.id, u.username
+ORDER BY
+    total_links DESC,
+    u.date_joined ASC
+LIMIT 10;
