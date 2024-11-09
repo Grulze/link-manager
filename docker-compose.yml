@@ -3,7 +3,7 @@ version: "3.8"
 services:
   db:
     image: postgres:16-alpine
-    container_name: jod_db
+    container_name: link_manager_db
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -24,6 +24,7 @@ services:
       - DB_NAME=postgres
       - DB_USER=postgres
       - DB_PASS=postgres
+    command: sh -c "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 link_manager_site.wsgi:application"
     ports:
       - 8000:8000
     depends_on:
