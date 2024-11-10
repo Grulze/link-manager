@@ -55,6 +55,9 @@ class CollectionSerializer(serializers.ModelSerializer):
         model = Collection
         exclude = ['owner']
         read_only_fields = ['created_at', 'updated_at']
+        extra_kwargs = {
+            'description': {'required': True},
+        }
 
     def create(self, validated_data):
         return Collection.objects.create(**validated_data, owner=self.context['request'].user)
